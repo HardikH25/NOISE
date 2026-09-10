@@ -1,0 +1,39 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700;900&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --color-neo-bg: #FFFDF5;
+  --color-neo-ink: #000000;
+  --color-neo-accent: #FF6B6B;
+  --color-neo-secondary: #FFD93D;
+  --color-neo-muted: #C4B5FD;
+}
+
+@layer base {
+  body {
+    @apply bg-neo-bg text-neo-ink font-sans;
+  }
+}
+
+/* Custom Neo-Brutalist Utilities */
+@layer utilities {
+  .neo-shadow-sm {
+    box-shadow: 4px 4px 0px 0px #000;
+  }
+  .neo-shadow-md {
+    box-shadow: 8px 8px 0px 0px #000;
+  }
+  .neo-shadow-lg {
+    box-shadow: 12px 12px 0px 0px #000;
+  }
+  
+  .text-stroke-black {
+    -webkit-text-stroke: 2px black;
+    color: transparent;
+  }
+  
+  .text-stroke-white {
+    -webkit-text-stroke: 2px white;
+    color: transparent;
+  }
+}
