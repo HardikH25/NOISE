@@ -99,7 +99,7 @@ const Home = () => {
                     </h1>
 
                     <p className="text-black font-bold text-lg sm:text-xl max-w-2xl uppercase border-4 border-black bg-white p-4 neo-shadow-sm rotate-1 mb-12">
-                        Curated goods for those who refuse to blend in. No corporate aesthetics. Just raw, unfiltered drops.
+                        Curated streetwear for those who refuse to blend in. No corporate aesthetics. Just raw, unfiltered drops.
                     </p>
 
                     {/* CTA Row */}
@@ -175,36 +175,36 @@ const Home = () => {
                     {/* Collection 1 */}
                     <div className="group border-4 border-black bg-white p-6 neo-shadow-md hover:-translate-y-2 hover:neo-shadow-lg transition-all duration-200 cursor-pointer relative">
                         <div className="w-full aspect-square border-4 border-black bg-[#C4B5FD] flex items-center justify-center mb-6">
-                            <span className="text-6xl">👕</span>
+                            <span className="text-6xl">🧥</span>
                         </div>
-                        <h3 className="text-3xl font-black text-black uppercase mb-2">Apparel</h3>
+                        <h3 className="text-3xl font-black text-black uppercase mb-2">Outerwear</h3>
                         <p className="font-bold text-black border-2 border-black inline-block px-2">42 DROPS</p>
                     </div>
 
                     {/* Collection 2 */}
                     <div className="group border-4 border-black bg-white p-6 neo-shadow-md hover:-translate-y-2 hover:neo-shadow-lg transition-all duration-200 cursor-pointer relative top-0 lg:top-8">
                         <div className="w-full aspect-square border-4 border-black bg-[#FFD93D] flex items-center justify-center mb-6">
-                            <span className="text-6xl">⌚</span>
+                            <span className="text-6xl">👟</span>
                         </div>
-                        <h3 className="text-3xl font-black text-black uppercase mb-2">Watches</h3>
+                        <h3 className="text-3xl font-black text-black uppercase mb-2">Sneakers</h3>
                         <p className="font-bold text-black border-2 border-black inline-block px-2">28 DROPS</p>
                     </div>
 
                     {/* Collection 3 */}
                     <div className="group border-4 border-black bg-white p-6 neo-shadow-md hover:-translate-y-2 hover:neo-shadow-lg transition-all duration-200 cursor-pointer relative top-0 lg:-top-4">
                         <div className="w-full aspect-square border-4 border-black bg-[#FF6B6B] flex items-center justify-center mb-6">
-                            <span className="text-6xl">🎧</span>
+                            <span className="text-6xl">🛹</span>
                         </div>
-                        <h3 className="text-3xl font-black text-black uppercase mb-2">Tech</h3>
+                        <h3 className="text-3xl font-black text-black uppercase mb-2">Streetwear</h3>
                         <p className="font-bold text-black border-2 border-black inline-block px-2">35 DROPS</p>
                     </div>
 
                     {/* Collection 4 */}
                     <div className="group border-4 border-black bg-white p-6 neo-shadow-md hover:-translate-y-2 hover:neo-shadow-lg transition-all duration-200 cursor-pointer relative top-0 lg:top-4">
                         <div className="w-full aspect-square border-4 border-black bg-[#4ADE80] flex items-center justify-center mb-6">
-                            <span className="text-6xl">🕶️</span>
+                            <span className="text-6xl">🧢</span>
                         </div>
-                        <h3 className="text-3xl font-black text-black uppercase mb-2">Accessories</h3>
+                        <h3 className="text-3xl font-black text-black uppercase mb-2">Headwear</h3>
                         <p className="font-bold text-black border-2 border-black inline-block px-2">56 DROPS</p>
                     </div>
                 </div>
@@ -219,7 +219,7 @@ const Home = () => {
                         BUILT DIFFERENT.
                     </h2>
                     <p className="text-black text-xl font-bold uppercase border-y-4 border-black py-4 bg-white rotate-1">
-                        NO FILLER. NO COMPROMISE. ONLY GOODS THAT MEET OUR OBSESSIVE QUALITY STANDARDS.
+                        NO FILLER. NO COMPROMISE. ONLY APPAREL THAT MEETS OUR OBSESSIVE QUALITY STANDARDS.
                     </p>
                 </div>
 

@@ -71,7 +71,7 @@ const Login = () => {
                         Welcome <br className="hidden xl:block" /> Back.
                     </h1>
                     <p className="text-black text-xl font-bold leading-snug max-w-sm border-l-4 border-black pl-4">
-                        YOUR CURATED COLLECTION OF RAW GOODS AWAITS. SIGN IN TO ACCESS YOUR STASH.
+                        YOUR CURATED COLLECTION OF RAW STREETWEAR AWAITS. SIGN IN TO ACCESS YOUR STASH.
                     </p>
                 </div>
 

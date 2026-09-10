@@ -70,7 +70,7 @@ const Signup = () => {
                         START YOUR<br />JOURNEY.
                     </h1>
                     <p className="text-black text-lg font-bold leading-snug">
-                        NO FILLER. NO CORPORATE BS. CREATE YOUR ACCOUNT TO UNLOCK RAW GOODS AND EXCLUSIVE DROPS.
+                        NO FILLER. NO CORPORATE BS. CREATE YOUR ACCOUNT TO UNLOCK RAW FASHION AND EXCLUSIVE DROPS.
                     </p>
 
                     {/* Feature pills */}
