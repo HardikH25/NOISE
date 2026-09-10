@@ -39,9 +39,7 @@ const Signup = () => {
     return (
         <div className="min-h-screen flex bg-neo-bg text-neo-ink font-sans selection:bg-neo-accent selection:text-white">
 
-            {/* ═══════════════════════════════════════════ */}
             {/* LEFT PANEL — Brand Showcase */}
-            {/* ═══════════════════════════════════════════ */}
             <div className="hidden lg:flex lg:w-[55%] relative overflow-hidden flex-col justify-between p-12 border-r-4 border-black bg-neo-muted"
                 style={{
                     backgroundImage: `radial-gradient(circle, #000 1.5px, transparent 1.5px)`,
@@ -98,9 +96,7 @@ const Signup = () => {
                 </div>
             </div>
 
-            {/* ═══════════════════════════════════════════ */}
             {/* RIGHT PANEL — Signup Form */}
-            {/* ═══════════════════════════════════════════ */}
             <div className="w-full lg:w-[45%] flex items-center justify-center relative bg-neo-bg">
 
                 {/* Mobile logo */}
@@ -143,7 +139,7 @@ const Signup = () => {
                             </label>
                             <input
                                 type="text"
-                                id="fullName"
+                                id="fullname"
                                 name="fullname"
                                 onChange={handleChange}
                                 value={formData.fullname}

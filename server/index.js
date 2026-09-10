@@ -23,5 +23,5 @@ mongoose.connect(process.env.dbURL).then(() => {
 
 
 app.listen(8070, () => {
-    console.log('Welcome to port 8070');
+    console.log('Welcome to port 8070')
 })

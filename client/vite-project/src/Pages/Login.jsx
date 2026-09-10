@@ -20,8 +20,8 @@ const Login = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            await axiosInstance.post('/customers/register', formData);
-            console.log('Customer Registered')
+            await axiosInstance.post('/customers/login', formData);
+            console.log('Customer Logged In')
             setFormData({
                 email: '',
                 password: ''
@@ -35,9 +35,7 @@ const Login = () => {
     return (
         <div className="min-h-screen flex bg-neo-bg text-neo-ink font-sans selection:bg-neo-accent selection:text-white">
 
-            {/* ═══════════════════════════════════════════ */}
             {/* LEFT PANEL — Brand Showcase */}
-            {/* ═══════════════════════════════════════════ */}
             <div className="hidden lg:flex lg:w-[55%] relative overflow-hidden flex-col justify-between p-12 border-r-4 border-black bg-neo-secondary"
                 style={{
                     backgroundImage: `linear-gradient(to right, rgba(0, 0, 0, 0.1) 1px, transparent 1px), linear-gradient(to bottom, rgba(0, 0, 0, 0.1) 1px, transparent 1px)`,
@@ -88,9 +86,7 @@ const Login = () => {
                 </div>
             </div>
 
-            {/* ═══════════════════════════════════════════ */}
             {/* RIGHT PANEL — Login Form */}
-            {/* ═══════════════════════════════════════════ */}
             <div className="w-full lg:w-[45%] flex items-center justify-center relative bg-neo-bg">
 
                 {/* Mobile logo */}
