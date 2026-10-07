@@ -1,9 +1,10 @@
 import React from 'react';
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { axiosInstance } from '../axiosCalls/axios';
 
 const Signup = () => {
+    const navigate = useNavigate();
 
     const [formData, setFormData] = useState({
         fullname: '',
@@ -30,6 +31,8 @@ const Signup = () => {
                 phone: '',
                 password: ''
             })
+            setError('');
+            navigate('/login');
         }
         catch (err) {
             setError(err.response?.data?.message)

@@ -1,6 +1,21 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
+import { axiosInstance } from '../axiosCalls/axios';
+import { useAuth } from '../context/AuthContext';
 
 const Home = () => {
+    const navigate = useNavigate();
+    const {customer, setCustomer} = useAuth()
+
+    const handleLogout = async () => {
+        try {
+            await axiosInstance.post('/customers/logout');
+            setCustomer(null);
+            navigate('/login');
+        } catch (err) {
+            console.log(err);
+        }
+    };
     return (
         <div className="min-h-screen bg-neo-bg text-neo-ink font-sans selection:bg-neo-accent selection:text-white relative overflow-hidden">
 
@@ -31,12 +46,19 @@ const Home = () => {
 
                     {/* Navigation */}
                     <nav className="hidden md:flex items-center gap-8 text-sm font-bold tracking-widest uppercase">
-                        <span className="hover:text-neo-accent hover:-translate-y-0.5 transition-transform cursor-pointer flex items-center gap-2">
+                        <span onClick={() => navigate('/products')} className="hover:text-neo-accent hover:-translate-y-0.5 transition-transform cursor-pointer flex items-center gap-2">
                             New Drops
                             <span className="w-2 h-2 border-2 border-black rounded-full bg-neo-accent animate-pulse"></span>
                         </span>
-                        <span className="hover:text-neo-accent hover:-translate-y-0.5 transition-transform cursor-pointer">Collections</span>
                         <span className="hover:text-neo-accent hover:-translate-y-0.5 transition-transform cursor-pointer">Trending</span>
+                        <span onClick={() => navigate('/wishlist')} className="hover:text-neo-accent hover:-translate-y-0.5 transition-transform cursor-pointer flex items-center gap-2">
+                            Wishlist 
+                            {customer?.wishlist?.length > 0 && (
+                                <span className="bg-[#FF4545] text-white px-2 py-0.5 border-2 border-black text-xs font-black">
+                                    {customer.wishlist.length}
+                                </span>
+                            )}
+                        </span>
                         <span className="hover:text-neo-accent hover:-translate-y-0.5 transition-transform cursor-pointer">About</span>
                     </nav>
 
@@ -56,9 +78,10 @@ const Home = () => {
                             <span className="absolute -top-3 -right-3 w-6 h-6 bg-neo-accent border-2 border-black flex items-center justify-center text-xs font-black rotate-6">0</span>
                         </button>
 
-                        {/* Logout Button (Redesigned to Neo-Brutalism) */}
+                        {/* Logout Button */}
                         <button
                             type="button"
+                            onClick={handleLogout}
                             className="relative group px-4 py-2 font-bold uppercase tracking-wider text-sm flex items-center gap-2 cursor-pointer"
                         >
                             <div className="absolute inset-0 bg-black translate-x-1.5 translate-y-1.5 group-active:translate-x-0 group-active:translate-y-0 transition-transform duration-100" />
@@ -129,7 +152,7 @@ const Home = () => {
                         {/* CTA Row */}
                         <div className="flex flex-col sm:flex-row items-start gap-4">
                             {/* Primary Button */}
-                            <button type="button" className="relative group w-full sm:w-auto cursor-pointer block">
+                            <button onClick={() => navigate('/products')} type="button" className="relative group w-full sm:w-auto cursor-pointer block">
                                 <div className="absolute inset-0 bg-black translate-x-2 translate-y-2 group-hover:translate-x-3 group-hover:translate-y-3 transition-transform duration-200" />
                                 <div className="relative border-4 border-black bg-neo-secondary px-8 py-4 flex items-center justify-center gap-3 transition-transform duration-200 active:translate-x-2 active:translate-y-2">
                                     <span className="font-black text-xl uppercase tracking-wider text-black">Shop Drops</span>
@@ -140,13 +163,36 @@ const Home = () => {
                             </button>
 
                             {/* Secondary Button */}
-                            <button type="button" className="relative group w-full sm:w-auto cursor-pointer block mt-2 sm:mt-0">
+                            <button onClick={() => navigate('/products')} type="button" className="relative group w-full sm:w-auto cursor-pointer block mt-2 sm:mt-0">
                                 <div className="absolute inset-0 bg-black translate-x-2 translate-y-2 group-hover:translate-x-3 group-hover:translate-y-3 transition-transform duration-200" />
                                 <div className="relative border-4 border-black bg-white px-8 py-4 flex items-center justify-center gap-3 transition-transform duration-200 active:translate-x-2 active:translate-y-2">
                                     <span className="font-black text-xl uppercase tracking-wider text-black">Collections</span>
                                 </div>
                             </button>
                         </div>
+
+                        
+                        {customer && (
+                            <div className="mt-12 p-6 border-4 border-black bg-[#C4B5FD] neo-shadow-sm rotate-1 hover:rotate-0 transition-transform">
+                                <h2 className="text-2xl font-black uppercase mb-4 border-b-4 border-black pb-2">
+                                    Welcome, {customer.fullname}
+                                </h2>
+                                <div className="space-y-2 font-bold text-black uppercase text-sm">
+                                    <div className="flex items-center gap-2">
+                                        <svg className="w-5 h-5 stroke-[3px]" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>
+                                        <span>NAME: {customer.fullname}</span>
+                                    </div>
+                                    <div className="flex items-center gap-2">
+                                        <svg className="w-5 h-5 stroke-[3px]" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>
+                                        <span>EMAIL: {customer.email}</span>
+                                    </div>
+                                    <div className="flex items-center gap-2">
+                                        <svg className="w-5 h-5 stroke-[3px]" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" /></svg>
+                                        <span>PHONE: {customer.phone}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        )}
                     </div>
                 </div>
 

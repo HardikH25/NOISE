@@ -17,9 +17,11 @@ const customerSchema = new mongoose.Schema({
     phone:{
         type: Number,
         required: true
-    }
+    },
+    wishlist: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'product'
+    }]
 },{timestamps: true})
-
 const CustomerModel = mongoose.model('customer', customerSchema);
-
 export default CustomerModel;

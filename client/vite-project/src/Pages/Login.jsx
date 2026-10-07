@@ -1,16 +1,17 @@
 import React from 'react';
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { axiosInstance } from '../axiosCalls/axios';
+import { useAuth } from '../context/AuthContext';
 
 const Login = () => {
-
+    const navigate = useNavigate();
+    const { setCustomer } = useAuth();
     const [formData, setFormData] = useState({
         email: '',
         password: ''
     })
     const [error, setError] = useState('');
-
     const handleChange = (e) => {
         setFormData((prev) => ({
             ...prev, [e.target.name]: e.target.value
@@ -22,10 +23,16 @@ const Login = () => {
         try {
             await axiosInstance.post('/customers/login', formData);
             console.log('Customer Logged In')
+            
+            const me = await axiosInstance.get('/customers/me');
+            setCustomer(me.data.customerData);
+            
             setFormData({
                 email: '',
                 password: ''
             })
+            setError('');
+            navigate('/home');
         }
         catch (err) {
             setError(err.response?.data?.message)
