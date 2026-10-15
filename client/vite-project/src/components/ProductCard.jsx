@@ -139,7 +139,7 @@ const ProductCard = ({ product }) => {
                     {/* Cart Button */}
                     <button
                         onClick={handleAddToCart}
-                        disabled={isAddingToCart || product.stock === 0 || (quantityInCart === product.stock)}
+                        disabled={isAddingToCart || product.stock === 0 || (quantityInCart >= product.stock)}
                         className={`w-full py-2 border-2 border-black font-black text-sm uppercase transition-all ${isAddingToCart ? 'bg-gray-200 text-gray-500 cursor-not-allowed' :
                             product.stock === 0 ? 'bg-gray-200 text-gray-500 cursor-not-allowed' :
                                 quantityInCart > 0 ? 'bg-neo-accent text-black hover:bg-black hover:text-neo-accent' :
@@ -148,7 +148,7 @@ const ProductCard = ({ product }) => {
                     >
                         {isAddingToCart ? '⏳ Adding...' :
                             product.stock === 0 ? 'Out of Stock' :
-                                quantityInCart == product.stock ? 'Max Stock Reached' :
+                                quantityInCart >= product.stock ? 'Max Stock Reached' :
                                     quantityInCart > 0 ? `🛒 Add Another (${quantityInCart})` :
                                         '🛒 Add to Cart'}
                     </button>

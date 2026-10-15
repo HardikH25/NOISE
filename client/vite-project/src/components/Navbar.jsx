@@ -49,7 +49,9 @@ const Navbar = () => {
                             </span>
                         )}
                     </span>
-                    <span className="hover:text-neo-accent hover:-translate-y-0.5 transition-transform cursor-pointer">About</span>
+                    <span onClick={() => navigate('/orders')} className="hover:text-neo-accent hover:-translate-y-0.5 transition-transform cursor-pointer">
+                        Orders
+                    </span>
                 </nav>
 
                 {/* Actions */}

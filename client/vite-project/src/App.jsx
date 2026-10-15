@@ -8,6 +8,9 @@ import Products from './Pages/Products';
 import ProductDetails from './Pages/ProductDetails';
 import Wishlist from './Pages/Wishlist';
 import Cart from './Pages/Cart';
+import Checkout from './Pages/Checkout';
+import OrderSuccess from './Pages/OrderSuccess';
+import Orders from './Pages/Orders';
 import Navbar from './components/Navbar';
 import { useAuth } from './context/AuthContext';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
@@ -25,6 +28,9 @@ function App() {
         <Route path='/products/:id' element={<ProtectedRoute><ProductDetails /></ProtectedRoute>}></Route>
         <Route path='/wishlist' element={<ProtectedRoute><Wishlist /></ProtectedRoute>}></Route>
         <Route path='/cart' element={<ProtectedRoute><Cart /></ProtectedRoute>}></Route>
+        <Route path='/checkout' element={<ProtectedRoute><Checkout /></ProtectedRoute>}></Route>
+        <Route path='/order-success/:id' element={<ProtectedRoute><OrderSuccess /></ProtectedRoute>}></Route>
+        <Route path='/orders' element={<ProtectedRoute><Orders /></ProtectedRoute>}></Route>
         <Route path='/signup' element={<PublicRoute><Signup /></PublicRoute>}></Route>
         <Route path='/login' element={<PublicRoute><Login /></PublicRoute>}></Route>
       </Routes>

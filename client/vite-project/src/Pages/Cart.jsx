@@ -161,8 +161,11 @@ const Cart = () => {
                                 </span>
                             </div>
 
-                            <button className="w-full bg-neo-primary border-4 border-black py-4 font-black text-xl uppercase tracking-widest hover:-translate-y-1 hover:neo-shadow-lg transition-all active:translate-y-0 active:neo-shadow-sm">
-                                CHECKOUT NOW
+                            <button 
+                                onClick={() => navigate('/checkout')}
+                                className="w-full bg-neo-primary border-4 border-black py-4 font-black text-xl uppercase tracking-widest hover:-translate-y-1 hover:neo-shadow-lg transition-all active:translate-y-0 active:neo-shadow-sm flex items-center justify-center gap-2 cursor-pointer"
+                            >
+                                PROCEED TO CHECKOUT ➔
                             </button>
                         </div>
                     </div>

@@ -2,16 +2,20 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { axiosInstance } from '../axiosCalls/axios';
 import { useAuth } from '../context/AuthContext';
+import { useCart } from '../context/CartContext';
 
 const ProductDetails = () => {
     const { id } = useParams();
     const navigate = useNavigate();
     const { customer, setCustomer } = useAuth();
+    const { cartItems, addToCart } = useCart();
     const [product, setProduct] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [wishlistStatus, setWishlistStatus] = useState('default'); // 'default', 'loading', 'success', 'error'
     const [wishlistError, setWishlistError] = useState('');
+    const [isAddingToCart, setIsAddingToCart] = useState(false);
+    const [cartMessage, setCartMessage] = useState('');
     
     useEffect(() => {
         const fetchProduct = async () => {
@@ -93,7 +97,34 @@ const ProductDetails = () => {
             setWishlistError(error.response?.data?.message || 'Unable to update wishlist');
             setTimeout(() => setWishlistStatus('default'), 3000);
         }
-    }
+    };
+
+    const cartItem = cartItems?.find(item => item.product?._id === product?._id || item.product === product?._id);
+    const quantityInCart = cartItem ? cartItem.quantity : 0;
+
+    const handleAddToCart = async () => {
+        if (!customer) {
+            alert('Please login to add to cart');
+            navigate('/login');
+            return;
+        }
+
+        if (product.stock === 0 || quantityInCart >= product.stock) {
+            return;
+        }
+
+        setIsAddingToCart(true);
+        setCartMessage('');
+        const result = await addToCart(product._id);
+        if (!result.success) {
+            alert(result.message);
+        } else {
+            setCartMessage('ADDED TO CART!');
+            setTimeout(() => setCartMessage(''), 2000);
+        }
+        setIsAddingToCart(false);
+    };
+
     return (
         <div className="min-h-screen bg-neo-bg text-neo-ink font-sans selection:bg-neo-accent selection:text-white py-12 md:py-24">
             <div className="max-w-6xl mx-auto px-6">
@@ -119,8 +150,8 @@ const ProductDetails = () => {
                                 alt={product.name}
                                 className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700"
                                 onError={(e) => { 
-                                    e.target.onerror = null; 
-                                    e.target.src = 'https://images.unsplash.com/photo-1523398002811-999aa8d9512e?q=80&w=600&auto=format&fit=crop'; 
+                                     e.target.onerror = null; 
+                                     e.target.src = 'https://images.unsplash.com/photo-1523398002811-999aa8d9512e?q=80&w=600&auto=format&fit=crop'; 
                                 }}
                             />
                             
@@ -169,13 +200,24 @@ const ProductDetails = () => {
                         {/* Actions */}
                         <div className="mt-auto flex flex-col gap-4">
                             <button 
-                                disabled={product.stock === 0}
-                                className={`relative group w-full cursor-pointer block ${product.stock === 0 ? 'opacity-50 cursor-not-allowed' : ''}`}
+                                onClick={handleAddToCart}
+                                disabled={product.stock === 0 || quantityInCart >= product.stock || isAddingToCart}
+                                className={`relative group w-full cursor-pointer block ${(product.stock === 0 || quantityInCart >= product.stock) ? 'opacity-50 cursor-not-allowed' : ''}`}
                             >
                                 <div className="absolute inset-0 bg-black translate-x-2 translate-y-2 group-active:translate-x-0 group-active:translate-y-0 transition-transform duration-100" />
-                                <div className={`relative border-4 border-black px-8 py-6 flex items-center justify-center gap-3 transition-transform duration-100 group-active:translate-x-2 group-active:translate-y-2 ${product.stock === 0 ? 'bg-neo-muted' : 'bg-neo-secondary'}`}>
+                                <div className={`relative border-4 border-black px-8 py-6 flex items-center justify-center gap-3 transition-transform duration-100 group-active:translate-x-2 group-active:translate-y-2 ${(product.stock === 0 || quantityInCart >= product.stock) ? 'bg-neo-muted' : cartMessage ? 'bg-[#4DEEEA]' : 'bg-neo-secondary'}`}>
                                     <span className="font-black text-2xl uppercase tracking-wider text-black">
-                                        {product.stock === 0 ? 'UNAVAILABLE' : 'ADD TO CART'}
+                                        {product.stock === 0 
+                                            ? 'OUT OF STOCK' 
+                                            : quantityInCart >= product.stock 
+                                            ? 'MAX STOCK REACHED' 
+                                            : isAddingToCart 
+                                            ? 'ADDING TO CART...' 
+                                            : cartMessage 
+                                            ? '✓ ADDED TO CART!' 
+                                            : quantityInCart > 0 
+                                            ? `ADD MORE (${quantityInCart} IN CART)` 
+                                            : 'ADD TO CART'}
                                     </span>
                                     {product.stock > 0 && (
                                         <svg className="w-8 h-8 stroke-[3px] text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor">

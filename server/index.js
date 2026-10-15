@@ -5,6 +5,7 @@ import customerRouter from './routes/customer.routes.js';
 import productRouter from './routes/product.routes.js';
 import wishlistRouter from './routes/wishlist.routes.js';
 import cartRouter from './routes/cart.routes.js';
+import orderRouter from './routes/order.routes.js';
 import cookieParser from 'cookie-parser';
 import cors from 'cors'
 
@@ -21,6 +22,7 @@ app.use('/customers', customerRouter)
 app.use('/products', productRouter)
 app.use('/wishlist', wishlistRouter)
 app.use('/cart', cartRouter)
+app.use('/orders', orderRouter)
 mongoose.connect(process.env.dbURL).then(() => {
     console.log('DB Connected')
 }).catch((error) => {
