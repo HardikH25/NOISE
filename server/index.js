@@ -13,14 +13,21 @@ import cors from 'cors'
 dotenv.config();
 const app = express();
 
+const clientUrl = process.env.CLIENT_URL ? process.env.CLIENT_URL.replace(/\/$/, '') : null;
+
 const allowedOrigins = [
     'http://localhost:5173',
-    process.env.CLIENT_URL
+    clientUrl
 ].filter(Boolean);
 
 app.use(cors({
     origin: (origin, callback) => {
-        if (!origin || allowedOrigins.includes(origin) || process.env.NODE_ENV !== 'production') {
+        if (
+            !origin ||
+            allowedOrigins.includes(origin) ||
+            (typeof origin === 'string' && origin.endsWith('.vercel.app')) ||
+            process.env.NODE_ENV !== 'production'
+        ) {
             return callback(null, true);
         }
         return callback(new Error('Blocked by CORS policy'));
