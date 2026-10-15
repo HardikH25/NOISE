@@ -42,7 +42,6 @@ export const CartProvider = ({ children }) => {
         try {
             const response = await axiosInstance.post(`/cart/${productId}`);
             setCartItems(response.data.cart);
-            console.log(response);
             return { success: true, data: response.data.cart };
         } catch (err) {
             console.error("Error adding to cart:", err);
@@ -58,7 +57,6 @@ export const CartProvider = ({ children }) => {
         try {
             const response = await axiosInstance.patch(`/cart/${productId}`, { quantity });
             setCartItems(response.data.cart);
-            console.log(response);
             return { success: true, data: response.data.cart };
         } catch (err) {
             console.error("Error updating quantity:", err);
@@ -74,7 +72,6 @@ export const CartProvider = ({ children }) => {
         try {
             const response = await axiosInstance.delete(`/cart/${productId}`);
             setCartItems(response.data.cart);
-            console.log(response);
             return { success: true, data: response.data.cart };
         } catch (err) {
             console.error("Error removing from cart:", err);

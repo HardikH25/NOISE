@@ -24,7 +24,6 @@ const Signup = () => {
         e.preventDefault();
         try {
             await axiosInstance.post('/customers/register', formData);
-            console.log('Customer Registered')
             setFormData({
                 fullname: '',
                 email: '',

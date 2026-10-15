@@ -58,20 +58,6 @@ export const addToCart = async (req, res) => {
             message: "Cart updated successfully",
             cart: customer.cart
         });
-        //         "cart": [
-        //   {
-        //     "product": {
-        //       "_id": "66d123...",
-        //       "name": "Mechanical Keyboard",
-        //       "price": 2999,
-        //       "image": "https://example.com/keyboard.jpg",
-        //       "stock": 10
-        //     },
-        //     "quantity": 2
-        //   }
-        // ]
-
-
     } catch (error) {
         console.error("Error in addToCart:", error);
         return res.status(500).json({ success: false, message: "Internal server error" });

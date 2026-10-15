@@ -250,7 +250,7 @@ const ProductDetails = () => {
                                 </div>
                             </button>
                             <p className="text-center font-bold text-xs uppercase tracking-widest mt-6 text-black/60">
-                                FREE SHIPPING ON ORDERS OVER ₹5000. DO NOT RETURN IF TAGS ARE REMOVED.
+                                FREE SHIPPING ON ORDERS OVER ₹5000. ALL SALES ARE FINAL. NO RETURNS OR EXCHANGES.
                             </p>
                         </div>
                     </div>

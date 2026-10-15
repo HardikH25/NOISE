@@ -37,10 +37,9 @@ const Navbar = () => {
                 {/* Navigation */}
                 <nav className="hidden md:flex items-center gap-8 text-sm font-bold tracking-widest uppercase">
                     <span onClick={() => navigate('/products')} className="hover:text-neo-accent hover:-translate-y-0.5 transition-transform cursor-pointer flex items-center gap-2">
-                        New Drops
+                        Browse Collection
                         <span className="w-2 h-2 border-2 border-black rounded-full bg-neo-accent animate-pulse"></span>
                     </span>
-                    <span className="hover:text-neo-accent hover:-translate-y-0.5 transition-transform cursor-pointer">Trending</span>
                     <span onClick={() => navigate('/wishlist')} className="hover:text-neo-accent hover:-translate-y-0.5 transition-transform cursor-pointer flex items-center gap-2">
                         Wishlist 
                         {customer?.wishlist?.length > 0 && (
@@ -57,7 +56,11 @@ const Navbar = () => {
                 {/* Actions */}
                 <div className="flex items-center gap-4">
                     {/* Search */}
-                    <button type="button" className="hidden sm:flex w-10 h-10 items-center justify-center border-4 border-black bg-white neo-shadow-sm hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none transition-all">
+                    <button 
+                        type="button" 
+                        onClick={() => navigate('/products')}
+                        className="hidden sm:flex w-10 h-10 items-center justify-center border-4 border-black bg-white neo-shadow-sm hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none transition-all cursor-pointer"
+                    >
                         <svg className="w-5 h-5 stroke-[3px]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
                         </svg>

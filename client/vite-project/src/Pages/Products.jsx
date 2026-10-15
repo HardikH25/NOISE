@@ -1,15 +1,26 @@
 import React, { useState, useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { axiosInstance } from '../axiosCalls/axios';
 import ProductCard from '../components/ProductCard';
+import Footer from '../components/Footer';
 
 const Products = () => {
+    const [searchParams, setSearchParams] = useSearchParams();
     const [products, setProducts] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
-    // Filters
+    // Filters (initialized from URL if present)
     const [searchTerm, setSearchTerm] = useState('');
-    const [category, setCategory] = useState('');
+    const [category, setCategory] = useState(searchParams.get('category') || '');
+
+    // Sync with URL params if user navigates back/forward or from category cards
+    useEffect(() => {
+        const urlCat = searchParams.get('category');
+        if (urlCat !== null && urlCat !== category) {
+            setCategory(urlCat);
+        }
+    }, [searchParams]);
 
     const fetchProducts = async () => {
         setLoading(true);
@@ -19,7 +30,7 @@ const Products = () => {
             if (searchTerm) params.append('search', searchTerm);
             if (category) params.append('category', category);
 
-            const response = await axiosInstance.get(`/products?${params.toString()}`);//after question mark -> url doesnt change the route path -? ? packages the query neatly into an obj ->req.query
+            const response = await axiosInstance.get(`/products?${params.toString()}`);
             setProducts(response.data.products);
         } catch (err) {
             setError(err.response?.data?.message || 'Something went wrong while loading products.');
@@ -27,6 +38,7 @@ const Products = () => {
             setLoading(false);
         }
     };
+
     // Debounced effect for search and category changes
     useEffect(() => {
         const delayDebounceFn = setTimeout(() => {
@@ -130,6 +142,7 @@ const Products = () => {
                     </div>
                 )}
             </div>
+            <Footer />
         </div>
     );
 };

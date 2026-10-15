@@ -1,11 +1,80 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { axiosInstance } from '../axiosCalls/axios';
 import { useAuth } from '../context/AuthContext';
+import Footer from '../components/Footer';
 
 const Home = () => {
     const navigate = useNavigate();
-    const {customer, setCustomer} = useAuth()
+    const { customer, setCustomer } = useAuth();
+
+    // Category live product counts
+    const [categoryCounts, setCategoryCounts] = useState({
+        'Hoodies': 0,
+        'Sneakers': 0,
+        'Graphic Tees': 0,
+        'Cargos': 0
+    });
+
+    // Newsletter subscription state
+    const [newsletterEmail, setNewsletterEmail] = useState('');
+    const [subscribeStatus, setSubscribeStatus] = useState('idle'); // idle | loading | success | error
+    const [subscribeMsg, setSubscribeMsg] = useState('');
+
+    useEffect(() => {
+        const fetchCategoryCounts = async () => {
+            try {
+                const res = await axiosInstance.get('/products');
+                if (res.data?.products) {
+                    const counts = { 'Hoodies': 0, 'Sneakers': 0, 'Graphic Tees': 0, 'Cargos': 0 };
+                    res.data.products.forEach(p => {
+                        if (counts[p.category] !== undefined) {
+                            counts[p.category]++;
+                        } else {
+                            counts[p.category] = 1;
+                        }
+                    });
+                    setCategoryCounts(counts);
+                }
+            } catch (err) {
+                console.error('Error fetching categories count:', err);
+            }
+        };
+        fetchCategoryCounts();
+    }, []);
+
+    const handleSubscribe = async (e) => {
+        if (e) e.preventDefault();
+        if (!newsletterEmail || !newsletterEmail.trim()) {
+            setSubscribeStatus('error');
+            setSubscribeMsg('Please enter your email address.');
+            return;
+        }
+
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(newsletterEmail.trim())) {
+            setSubscribeStatus('error');
+            setSubscribeMsg('Please enter a valid email address.');
+            return;
+        }
+
+        try {
+            setSubscribeStatus('loading');
+            setSubscribeMsg('');
+            const res = await axiosInstance.post('/newsletter/subscribe', {
+                email: newsletterEmail.trim()
+            });
+
+            if (res.data.success) {
+                setSubscribeStatus('success');
+                setSubscribeMsg(res.data.message || "YOU'RE IN! WELCOME TO THE KULT.");
+                setNewsletterEmail('');
+            }
+        } catch (err) {
+            setSubscribeStatus('error');
+            setSubscribeMsg(err.response?.data?.message || 'Failed to join the Kult. Try again.');
+        }
+    };
 
     const handleLogout = async () => {
         try {
@@ -237,7 +306,11 @@ const Home = () => {
                             CATEGORIES
                         </h2>
                     </div>
-                    <button type="button" className="mt-8 sm:mt-0 font-black uppercase tracking-widest text-black hover:text-neo-accent transition-colors flex items-center gap-2 border-b-4 border-black pb-1 hover:border-neo-accent group">
+                    <button 
+                        type="button" 
+                        onClick={() => navigate('/products')}
+                        className="mt-8 sm:mt-0 font-black uppercase tracking-widest text-black hover:text-neo-accent transition-colors flex items-center gap-2 border-b-4 border-black pb-1 hover:border-neo-accent group cursor-pointer"
+                    >
                         <span>View All</span>
                         <svg className="w-6 h-6 stroke-[4px] group-hover:translate-x-2 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path strokeLinecap="round" strokeLinejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
@@ -247,7 +320,10 @@ const Home = () => {
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
                     {/* Collection 1 */}
-                    <div className="group border-4 border-black bg-white p-4 neo-shadow-md hover:-translate-y-2 hover:neo-shadow-lg transition-all duration-200 cursor-pointer relative">
+                    <div 
+                        onClick={() => navigate('/products?category=Hoodies')}
+                        className="group border-4 border-black bg-white p-4 neo-shadow-md hover:-translate-y-2 hover:neo-shadow-lg transition-all duration-200 cursor-pointer relative"
+                    >
                         <div className="w-full aspect-[4/5] border-4 border-black bg-black flex items-center justify-center mb-6 overflow-hidden relative">
                             <img
                                 src="/public/collection_hoodie.jpg"
@@ -258,11 +334,16 @@ const Home = () => {
                             <div className="absolute inset-0 bg-neo-accent mix-blend-multiply opacity-20 group-hover:opacity-0 transition-opacity"></div>
                         </div>
                         <h3 className="text-3xl font-black text-black uppercase mb-2">Hoodies</h3>
-                        <p className="font-bold text-black border-2 border-black inline-block px-2">42 DROPS</p>
+                        <p className="font-bold text-black border-2 border-black inline-block px-2">
+                            {categoryCounts['Hoodies'] || 0} {categoryCounts['Hoodies'] === 1 ? 'DROP' : 'DROPS'}
+                        </p>
                     </div>
 
                     {/* Collection 2 */}
-                    <div className="group border-4 border-black bg-white p-4 neo-shadow-md hover:-translate-y-2 hover:neo-shadow-lg transition-all duration-200 cursor-pointer relative top-0 lg:top-8">
+                    <div 
+                        onClick={() => navigate('/products?category=Sneakers')}
+                        className="group border-4 border-black bg-white p-4 neo-shadow-md hover:-translate-y-2 hover:neo-shadow-lg transition-all duration-200 cursor-pointer relative top-0 lg:top-8"
+                    >
                         <div className="w-full aspect-[4/5] border-4 border-black bg-black flex items-center justify-center mb-6 overflow-hidden relative">
                             <img
                                 src="/public/collection_sneakers.jpg"
@@ -273,11 +354,16 @@ const Home = () => {
                             <div className="absolute inset-0 bg-neo-secondary mix-blend-multiply opacity-20 group-hover:opacity-0 transition-opacity"></div>
                         </div>
                         <h3 className="text-3xl font-black text-black uppercase mb-2">Sneakers</h3>
-                        <p className="font-bold text-black border-2 border-black inline-block px-2">28 DROPS</p>
+                        <p className="font-bold text-black border-2 border-black inline-block px-2">
+                            {categoryCounts['Sneakers'] || 0} {categoryCounts['Sneakers'] === 1 ? 'DROP' : 'DROPS'}
+                        </p>
                     </div>
 
                     {/* Collection 3 */}
-                    <div className="group border-4 border-black bg-white p-4 neo-shadow-md hover:-translate-y-2 hover:neo-shadow-lg transition-all duration-200 cursor-pointer relative top-0 lg:-top-4">
+                    <div 
+                        onClick={() => navigate('/products?category=Graphic Tees')}
+                        className="group border-4 border-black bg-white p-4 neo-shadow-md hover:-translate-y-2 hover:neo-shadow-lg transition-all duration-200 cursor-pointer relative top-0 lg:-top-4"
+                    >
                         <div className="w-full aspect-[4/5] border-4 border-black bg-black flex items-center justify-center mb-6 overflow-hidden relative">
                             <img
                                 src="/public/collection_gtees.jpg"
@@ -288,11 +374,16 @@ const Home = () => {
                             <div className="absolute inset-0 bg-[#4ADE80] mix-blend-multiply opacity-20 group-hover:opacity-0 transition-opacity"></div>
                         </div>
                         <h3 className="text-3xl font-black text-black uppercase mb-2">Graphic Tees</h3>
-                        <p className="font-bold text-black border-2 border-black inline-block px-2">35 DROPS</p>
+                        <p className="font-bold text-black border-2 border-black inline-block px-2">
+                            {categoryCounts['Graphic Tees'] || 0} {categoryCounts['Graphic Tees'] === 1 ? 'DROP' : 'DROPS'}
+                        </p>
                     </div>
 
                     {/* Collection 4 */}
-                    <div className="group border-4 border-black bg-white p-4 neo-shadow-md hover:-translate-y-2 hover:neo-shadow-lg transition-all duration-200 cursor-pointer relative top-0 lg:top-4">
+                    <div 
+                        onClick={() => navigate('/products?category=Cargos')}
+                        className="group border-4 border-black bg-white p-4 neo-shadow-md hover:-translate-y-2 hover:neo-shadow-lg transition-all duration-200 cursor-pointer relative top-0 lg:top-4"
+                    >
                         <div className="w-full aspect-[4/5] border-4 border-black bg-black flex items-center justify-center mb-6 overflow-hidden relative">
                             <img
                                 src="/public/collection_cargos.jpg"
@@ -303,7 +394,9 @@ const Home = () => {
                             <div className="absolute inset-0 bg-[#C4B5FD] mix-blend-multiply opacity-20 group-hover:opacity-0 transition-opacity"></div>
                         </div>
                         <h3 className="text-3xl font-black text-black uppercase mb-2">Cargos</h3>
-                        <p className="font-bold text-black border-2 border-black inline-block px-2">56 DROPS</p>
+                        <p className="font-bold text-black border-2 border-black inline-block px-2">
+                            {categoryCounts['Cargos'] || 0} {categoryCounts['Cargos'] === 1 ? 'DROP' : 'DROPS'}
+                        </p>
                     </div>
                 </div>
             </section>
@@ -370,113 +463,47 @@ const Home = () => {
                             BE THE FIRST TO KNOW ABOUT NEW COLLECTIONS AND LIMITED RELEASES.
                         </p>
 
-                        {/* Email Input */}
-                        <div className="flex flex-col sm:flex-row items-center justify-center gap-4 max-w-lg mx-auto">
+                        {/* Email Input & Subscribe Form */}
+                        <form onSubmit={handleSubscribe} className="flex flex-col sm:flex-row items-center justify-center gap-4 max-w-lg mx-auto mb-4">
                             <input
                                 type="email"
+                                value={newsletterEmail}
+                                onChange={(e) => setNewsletterEmail(e.target.value)}
                                 placeholder="YOUR@EMAIL.COM"
+                                disabled={subscribeStatus === 'loading'}
                                 className="w-full sm:flex-1 h-14 px-4 bg-white border-4 border-black focus:outline-none focus:bg-neo-secondary focus:neo-shadow-sm transition-all font-bold text-black placeholder:text-black/40"
                             />
-                            <button type="button" className="relative group w-full sm:w-auto cursor-pointer block">
+                            <button 
+                                type="submit" 
+                                disabled={subscribeStatus === 'loading'}
+                                className="relative group w-full sm:w-auto cursor-pointer block"
+                            >
                                 <div className="absolute inset-0 bg-black translate-x-1.5 translate-y-1.5 group-active:translate-x-0 group-active:translate-y-0 transition-transform duration-100" />
                                 <div className="relative h-14 bg-black px-8 py-4 flex items-center justify-center transition-transform duration-100 group-active:translate-x-1.5 group-active:translate-y-1.5">
-                                    <span className="font-black text-lg uppercase tracking-wider text-white">SUBSCRIBE</span>
+                                    <span className="font-black text-lg uppercase tracking-wider text-white">
+                                        {subscribeStatus === 'loading' ? 'SUBSCRIBING...' : 'SUBSCRIBE'}
+                                    </span>
                                 </div>
                             </button>
-                        </div>
+                        </form>
+
+                        {/* Feedback Alerts */}
+                        {subscribeStatus === 'success' && (
+                            <div className="inline-block mt-4 border-4 border-black bg-[#4ADE80] text-black px-4 py-2 font-black text-sm uppercase tracking-wide neo-shadow-sm">
+                                ⚡ {subscribeMsg}
+                            </div>
+                        )}
+                        {subscribeStatus === 'error' && (
+                            <div className="inline-block mt-4 border-4 border-black bg-[#FF4545] text-white px-4 py-2 font-black text-sm uppercase tracking-wide neo-shadow-sm">
+                                ❌ {subscribeMsg}
+                            </div>
+                        )}
                     </div>
                 </div>
             </section>
 
             {/* FOOTER */}
-            <footer className="border-t-8 border-black bg-white pt-16 pb-8 relative overflow-hidden">
-                <div className="max-w-7xl mx-auto px-6 relative z-10">
-                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-12 mb-16">
-                        {/* Column 1: Brand */}
-                        <div className="col-span-2 sm:col-span-1">
-                            <div className="inline-block border-4 border-black bg-neo-secondary px-3 py-1 mb-6 -rotate-2 neo-shadow-sm">
-                                <span className="font-black text-3xl tracking-tighter text-black uppercase leading-none">NOISE.</span>
-                            </div>
-                            <p className="font-bold text-sm uppercase text-black border-l-4 border-black pl-4">
-                                RAW E-COMMERCE FOR THE DESIGN-OBSESSED.
-                            </p>
-                        </div>
-
-                        {/* Column 2: Shop */}
-                        <div>
-                            <h4 className="text-lg font-black uppercase tracking-widest text-black mb-6 bg-[#FF6B6B] border-4 border-black px-2 py-1 inline-block rotate-1">SHOP</h4>
-                            <ul className="space-y-4 font-bold text-sm uppercase">
-                                <li className="hover:text-neo-accent cursor-pointer transition-colors flex items-center gap-2 hover:translate-x-2 duration-200">
-                                    <svg className="w-4 h-4 stroke-[4px]" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" /></svg>
-                                    New Drops
-                                </li>
-                                <li className="hover:text-neo-accent cursor-pointer transition-colors flex items-center gap-2 hover:translate-x-2 duration-200">
-                                    <svg className="w-4 h-4 stroke-[4px]" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" /></svg>
-                                    Best Sellers
-                                </li>
-                                <li className="hover:text-neo-accent cursor-pointer transition-colors flex items-center gap-2 hover:translate-x-2 duration-200">
-                                    <svg className="w-4 h-4 stroke-[4px]" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" /></svg>
-                                    Collections
-                                </li>
-                            </ul>
-                        </div>
-
-                        {/* Column 3: Company */}
-                        <div>
-                            <h4 className="text-lg font-black uppercase tracking-widest text-black mb-6 bg-[#4ADE80] border-4 border-black px-2 py-1 inline-block -rotate-1">COMPANY</h4>
-                            <ul className="space-y-4 font-bold text-sm uppercase">
-                                <li className="hover:text-neo-accent cursor-pointer transition-colors flex items-center gap-2 hover:translate-x-2 duration-200">
-                                    <svg className="w-4 h-4 stroke-[4px]" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" /></svg>
-                                    About Us
-                                </li>
-                                <li className="hover:text-neo-accent cursor-pointer transition-colors flex items-center gap-2 hover:translate-x-2 duration-200">
-                                    <svg className="w-4 h-4 stroke-[4px]" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" /></svg>
-                                    Careers
-                                </li>
-                                <li className="hover:text-neo-accent cursor-pointer transition-colors flex items-center gap-2 hover:translate-x-2 duration-200">
-                                    <svg className="w-4 h-4 stroke-[4px]" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" /></svg>
-                                    Press
-                                </li>
-                            </ul>
-                        </div>
-
-                        {/* Column 4: Support */}
-                        <div>
-                            <h4 className="text-lg font-black uppercase tracking-widest text-black mb-6 bg-[#C4B5FD] border-4 border-black px-2 py-1 inline-block rotate-2">SUPPORT</h4>
-                            <ul className="space-y-4 font-bold text-sm uppercase">
-                                <li className="hover:text-neo-accent cursor-pointer transition-colors flex items-center gap-2 hover:translate-x-2 duration-200">
-                                    <svg className="w-4 h-4 stroke-[4px]" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" /></svg>
-                                    FAQ
-                                </li>
-                                <li className="hover:text-neo-accent cursor-pointer transition-colors flex items-center gap-2 hover:translate-x-2 duration-200">
-                                    <svg className="w-4 h-4 stroke-[4px]" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" /></svg>
-                                    Returns
-                                </li>
-                                <li className="hover:text-neo-accent cursor-pointer transition-colors flex items-center gap-2 hover:translate-x-2 duration-200">
-                                    <svg className="w-4 h-4 stroke-[4px]" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" /></svg>
-                                    Size Guide
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-
-                    {/* Footer Bottom */}
-                    <div className="pt-8 border-t-4 border-black flex flex-col sm:flex-row items-center justify-between gap-6">
-                        <p className="font-black text-sm uppercase bg-black text-white px-3 py-1 rotate-1">
-                            &copy; 2026 NOISE. ALL RIGHTS RESERVED.
-                        </p>
-                        <div className="flex items-center gap-6 font-bold text-sm uppercase">
-                            <span className="hover:text-neo-accent cursor-pointer transition-colors border-b-2 border-black hover:border-neo-accent pb-0.5">Privacy</span>
-                            <span className="hover:text-neo-accent cursor-pointer transition-colors border-b-2 border-black hover:border-neo-accent pb-0.5">Terms</span>
-                        </div>
-                    </div>
-                </div>
-
-                {/* Background decorative text */}
-                <div className="absolute -bottom-20 left-0 w-full text-center overflow-hidden pointer-events-none opacity-5">
-                    <span className="text-[20vw] font-black uppercase whitespace-nowrap">NOISE.</span>
-                </div>
-            </footer>
+            <Footer />
         </div>
     );
 };

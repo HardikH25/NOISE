@@ -22,8 +22,6 @@ const Login = () => {
         e.preventDefault();
         try {
             await axiosInstance.post('/customers/login', formData);
-            console.log('Customer Logged In')
-            
             const me = await axiosInstance.get('/customers/me');
             setCustomer(me.data.customerData);
             
