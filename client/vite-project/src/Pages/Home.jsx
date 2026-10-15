@@ -202,7 +202,7 @@ const Home = () => {
                 <div className="relative z-10 flex-1 min-h-[60vh] md:min-h-full bg-black overflow-hidden flex items-center justify-center group border-t-4 md:border-t-0 border-black">
                     {/* Main Hero Image */}
                     <img
-                        src="/public/img5.jpg"
+                        src="/img5.jpg"
                         alt="Streetwear Hero"
                         className="absolute inset-0 w-full h-full object-cover opacity-80 object-center mix-blend-luminosity group-hover:mix-blend-normal group-hover:opacity-100 group-hover:scale-105 transition-all duration-700"
                         onError={(e) => { e.target.onerror = null; e.target.src = 'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?q=80&w=1200&auto=format&fit=crop'; }}
@@ -255,7 +255,7 @@ const Home = () => {
                     <div className="hidden lg:block absolute -left-28 top-1/2 -translate-y-1/2 w-72 aspect-[3/4] border-4 border-black bg-white p-2 neo-shadow-lg rotate-6 group-hover:translate-x-32 group-hover:-rotate-3 transition-all duration-700 ease-out z-30 cursor-pointer">
                         <div className="relative w-full h-full border-2 border-black overflow-hidden">
                             <img
-                                src="/public/img6.jpg"
+                                src="/img6.jpg"
                                 alt="Subculture"
                                 className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500"
                                 onError={(e) => { e.target.onerror = null; e.target.src = 'https://images.unsplash.com/photo-1529139574466-a303027c1d8b?q=80&w=600&auto=format&fit=crop'; }}
@@ -326,7 +326,7 @@ const Home = () => {
                     >
                         <div className="w-full aspect-[4/5] border-4 border-black bg-black flex items-center justify-center mb-6 overflow-hidden relative">
                             <img
-                                src="/public/collection_hoodie.jpg"
+                                src="/collection_hoodie.jpg"
                                 alt="Hoodies"
                                 className="w-full h-full object-cover grayscale group-hover:grayscale-0 group-hover:scale-110 transition-all duration-500"
                                 onError={(e) => { e.target.onerror = null; e.target.src = 'https://images.unsplash.com/photo-1556821840-3a63f95609a7?q=80&w=600&auto=format&fit=crop'; }}
@@ -346,7 +346,7 @@ const Home = () => {
                     >
                         <div className="w-full aspect-[4/5] border-4 border-black bg-black flex items-center justify-center mb-6 overflow-hidden relative">
                             <img
-                                src="/public/collection_sneakers.jpg"
+                                src="/collection_sneakers.jpg"
                                 alt="Sneakers"
                                 className="w-full h-full object-cover grayscale group-hover:grayscale-0 group-hover:scale-110 transition-all duration-500"
                                 onError={(e) => { e.target.onerror = null; e.target.src = 'https://images.unsplash.com/photo-1600185365483-26d7a4cc7519?q=80&w=600&auto=format&fit=crop'; }}
@@ -366,7 +366,7 @@ const Home = () => {
                     >
                         <div className="w-full aspect-[4/5] border-4 border-black bg-black flex items-center justify-center mb-6 overflow-hidden relative">
                             <img
-                                src="/public/collection_gtees.jpg"
+                                src="/collection_gtees.jpg"
                                 alt="Graphic Tees"
                                 className="w-full h-full object-cover grayscale group-hover:grayscale-0 group-hover:scale-110 transition-all duration-500"
                                 onError={(e) => { e.target.onerror = null; e.target.src = 'https://images.unsplash.com/photo-1523398002811-999aa8d9512e?q=80&w=600&auto=format&fit=crop'; }}
@@ -386,7 +386,7 @@ const Home = () => {
                     >
                         <div className="w-full aspect-[4/5] border-4 border-black bg-black flex items-center justify-center mb-6 overflow-hidden relative">
                             <img
-                                src="/public/collection_cargos.jpg"
+                                src="/collection_cargos.jpg"
                                 alt="Cargos"
                                 className="w-full h-full object-cover grayscale group-hover:grayscale-0 group-hover:scale-110 transition-all duration-500"
                                 onError={(e) => { e.target.onerror = null; e.target.src = 'https://images.unsplash.com/photo-1521369909029-2afed882ba9d?q=80&w=600&auto=format&fit=crop'; }}
